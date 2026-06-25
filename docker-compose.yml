@@ -1,0 +1,20 @@
+services:
+  lanpal:
+    image: ghcr.io/baseblocnh/lanpal:latest
+    container_name: lanpal
+    ports:
+      - "8080:8080"
+    volumes:
+      - lanpal-data:/data
+    environment:
+      - DB_PATH=/data/lanpal.db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/servers"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+volumes:
+  lanpal-data:

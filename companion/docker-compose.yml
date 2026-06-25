@@ -1,0 +1,7 @@
+services:
+  lanpal-companion:
+    image: ghcr.io/baseblocnh/lanpal-companion:latest
+    container_name: lanpal-companion
+    ports:
+      - "5199:5199"
+    restart: unless-stopped
