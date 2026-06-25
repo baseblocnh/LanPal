@@ -2,6 +2,13 @@ services:
   lanpal-companion:
     image: ghcr.io/baseblocnh/lanpal-companion:latest
     container_name: lanpal-companion
-    ports:
-      - "5199:5199"
+    # host networking lets the companion send WOL broadcast packets onto the
+    # physical LAN and binds port 5199 directly on the host.
+    #
+    # Synology note: if the companion is not detectable under host mode on your
+    # NAS, switch to explicit port mapping instead — comment out network_mode
+    # and uncomment the ports block below (WOL relay still works via the app):
+    #   ports:
+    #     - "5199:5199"
+    network_mode: host
     restart: unless-stopped

@@ -7,11 +7,14 @@ FROM --platform=$BUILDPLATFORM golang:1.22-alpine AS go-builder
 WORKDIR /src
 COPY companion/go.mod ./
 COPY companion/ .
-RUN CGO_ENABLED=0 GOOS=linux   GOARCH=amd64 go build -ldflags="-s -w" -o companion-linux-amd64   . && \
-    CGO_ENABLED=0 GOOS=linux   GOARCH=arm64 go build -ldflags="-s -w" -o companion-linux-arm64   . && \
-    CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o companion-windows-amd64.exe . && \
-    CGO_ENABLED=0 GOOS=darwin  GOARCH=amd64 go build -ldflags="-s -w" -o companion-darwin-amd64  . && \
-    CGO_ENABLED=0 GOOS=darwin  GOARCH=arm64 go build -ldflags="-s -w" -o companion-darwin-arm64  .
+RUN go mod tidy
+RUN CGO_ENABLED=0 GOOS=linux   GOARCH=amd64       go build -ldflags="-s -w" -o companion-linux-amd64    . && \
+    CGO_ENABLED=0 GOOS=linux   GOARCH=arm64       go build -ldflags="-s -w" -o companion-linux-arm64    . && \
+    CGO_ENABLED=0 GOOS=linux   GOARCH=arm GOARM=7 go build -ldflags="-s -w" -o companion-linux-armv7    . && \
+    CGO_ENABLED=0 GOOS=linux   GOARCH=arm GOARM=5 go build -ldflags="-s -w" -o companion-linux-armv5    . && \
+    CGO_ENABLED=0 GOOS=windows GOARCH=amd64       go build -ldflags="-s -w" -o companion-windows-amd64.exe . && \
+    CGO_ENABLED=0 GOOS=darwin  GOARCH=amd64       go build -ldflags="-s -w" -o companion-darwin-amd64   . && \
+    CGO_ENABLED=0 GOOS=darwin  GOARCH=arm64       go build -ldflags="-s -w" -o companion-darwin-arm64   .
 
 FROM python:3.12-slim
 LABEL org.opencontainers.image.source="https://github.com/baseblocnh/LanPal"

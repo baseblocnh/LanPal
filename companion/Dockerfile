@@ -3,6 +3,7 @@ FROM --platform=$BUILDPLATFORM golang:1.22-alpine AS builder
 WORKDIR /src
 COPY go.mod ./
 COPY . .
+RUN go mod tidy
 ARG TARGETOS TARGETARCH
 RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} \
     go build -ldflags="-s -w" -o companion .

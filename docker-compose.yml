@@ -2,8 +2,9 @@ services:
   lanpal:
     image: ghcr.io/baseblocnh/lanpal:latest
     container_name: lanpal
-    ports:
-      - "8080:8080"
+    # host networking is required for Wake-on-LAN direct mode to reach your LAN.
+    # The app binds to port 8080 directly on the host.
+    network_mode: host
     volumes:
       - lanpal-data:/data
     environment:
