@@ -1,5 +1,6 @@
 # LanPal
 
+[![Version](https://img.shields.io/badge/version-0.5_beta-blue.svg)](https://github.com/baseblocnh/LanPal/releases)
 [![License: PolyForm Noncommercial 1.0.0](https://img.shields.io/badge/License-PolyForm%20Noncommercial%201.0.0-blue.svg)](LICENSE)
 
 A self-hosted LAN tool. Open a browser on any device — desktop, phone, tablet, Shield TV, Echo Show — and measure real download speed, upload speed, latency, and jitter to servers on your local network, plus wake sleeping devices with a single click. No app installs, no extensions, no internet required after deployment.
