@@ -117,6 +117,18 @@ Change the port with `--port`:
 ./companion-linux-amd64 --port 9000
 ```
 
+**Running as a Windows service:**
+
+```powershell
+# Install and auto-start on boot (run as Administrator)
+.\companion-windows-amd64.exe --install-service
+
+# Remove the service
+.\companion-windows-amd64.exe --remove-service
+```
+
+> **Note:** For Wake-on-LAN relay to work, the companion must be able to send broadcasts on the host LAN. When using Docker, add `network_mode: host` to the companion stack (see the compose file). Standalone binaries work without any extra config.
+
 ## Adding a Server
 
 1. Open the web UI at `http://<main-app-ip>:8080`
