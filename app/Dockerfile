@@ -20,7 +20,8 @@ FROM python:3.12-slim
 LABEL org.opencontainers.image.source="https://github.com/baseblocnh/LanPal"
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
+# curl for the healthcheck; iputils-ping for ICMP-based WOL target liveness checks
+RUN apt-get update && apt-get install -y --no-install-recommends curl iputils-ping && rm -rf /var/lib/apt/lists/*
 
 COPY app/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt

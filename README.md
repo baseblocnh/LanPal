@@ -148,7 +148,7 @@ Change the port with `--port`:
 ## Running a Speed Test
 
 1. Go to the **Speed Test** tab
-2. Select a server from the dropdown
+2. Pick a server from the list — each row shows its live online/offline status so you can choose a reachable one before starting
 3. Click **Start Test**
 4. The test runs three phases — latency ping, download (10 s), upload (10 s) — and displays results in real time
 5. A live waveform chart plots download (blue) and upload (green) speed as the test runs and remains on screen afterward for inspection
@@ -210,7 +210,21 @@ Main App ──UDP unicast──► Router ──► Target device
 
 ### Status indicators
 
-Status dots on each target show online (green) / offline (grey) state, polled every 30 seconds via TCP to the configured status check port (default `9`; set to `80` for web servers, `22` for SSH-only devices, etc.).
+Status dots on each target show online (green) / offline (grey) state, polled every 30 seconds.
+
+Detection uses **ICMP ping** first — the main app sends a single echo request to the target IP. This is the most reliable LAN liveness signal because it does not depend on any TCP port being open.
+
+> **Firewall:** allow ICMP echo from the LanPal host to your target devices (and, for cross-VLAN targets, on the relevant router/firewall interfaces). Windows devices also need *File and Printer Sharing (Echo Request – ICMPv4-In)* enabled to answer ping.
+
+If ICMP fails (blocked or no reply), it falls back to a **TCP connection** on the configured **status check port** — a port that **accepts** or **actively refuses** (sends a reset) counts as online; a timeout counts as offline. Point this fallback port at a service the device keeps open:
+
+| Target | Fallback check port |
+|---|---|
+| Linux / NAS | `22` (SSH) |
+| Windows PC | `445` (SMB) |
+| Web server | `80` or `443` |
+
+> A closed/filtered port such as `9` on a firewalled host will time out and read as offline, so the TCP fallback only helps if it targets a listening service.
 
 ## Settings
 
